@@ -8,8 +8,9 @@ import argparse
 
 __author__ = """
 Read Kathy Tran's Question on after-hours-python channel
-https://stackoverflow.com/
-        questions/4785244/search-a-text-file-and-print-related-lines-in-python"""
+https://stackoverflow.com/questions/4785244/
+    search-a-text-file-and-print-related-lines-in-python
+    Received desperately need help from Jake H."""
 
 
 exit_flag = False
@@ -32,28 +33,44 @@ def signal_handler(sig_num, frame):
                     reversed(sorted(signal.__dict__.items()))
                     if v.startswith('SIG') and not v.startswith('SIG_'))
     watch.logger.warn('Received ' + signames[sig_num])
+    global exit_flag
     exit_flag = True
 
 
-def scan_file(filename):
+def scan_file(filename, magic_word, start_line):
     with open(filename, "r") as f:
+        search_idx = 0
         lines = f.read()
-        for line in lines:
-            pass
+        for search_idx, line in enumerate(lines):
+            if search_idx >= start_line:
+                if magic_word in line:
+                    watch.logger.info(
+                        "Found {}! in {} at line {}"
+                        .format(magic_word, filename, (search_idx + 1)))
+        return search_idx
 
 
-def detect_added_files(files_dict):
-    pass
+def detect_added_files(filename):
+    watch.logger.info("{} has been added".format(filename))
 
 
-def detect_removed_files(files_dict):
-    pass
+def detect_removed_files(filename):
+    watch.logger.info("{} has been removed".format(filename))
+    return filename
 
 
-def watch_dir(polling_interval):
+def watch_dir(dirpath, magic_word, extension):
     files_dict = {}
-    while polling_interval:
-        pass
+    for filename in os.listdir(dirpath):
+        if filename.endswith(extension) and filename not in files_dict:
+            detect_added_files(filename)
+            files_dict[filename] = 0
+    for filename in files_dict:
+        if filename not in os.listdir(dirpath):
+            files_dict.pop(detect_removed_files(files_dict))
+    for filename in files_dict:
+        files_dict[filename] = scan_file(
+            filename, magic_word, files_dict[filename])
 
 
 def create_parser():
@@ -61,13 +78,15 @@ def create_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '-p', '--pollint',
-        help='set the polling interval for the dirwatcher')
+        help='set the polling interval for the dirwatcher',
+        default=1.0)
     parser.add_argument(
         '-s', '--search',
         help='sets the magic word to find in the directories')
     parser.add_argument(
         '-f', '--filter',
-        help='filters the file extension to search within for the magic word')
+        help='filters the file extension to search within for the magic word',
+        default=".txt")
     parser.add_argument(
         '-w', '--watch',
         help='specifies the directory to watch')
@@ -75,25 +94,24 @@ def create_parser():
     return parser
 
 
-def main():
+def main(args):
     # Hook these two signals from the OS ..
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
     # Now signal_handler will get called if OS sends
     # either of these to my process.
 
+    parser = create_parser()
+    args = parser.parse_args(args)
+    print(args)
     while not exit_flag:
         try:
-            pass
-            # watch_dir(polling_interval)
-        except Exception as e:
-            print(e)
-            # This is an UNHANDLED exception
-            # Log an ERROR level message here
-            # put a sleep inside my while loop
-            # so I don't peg the cpu usage at 100%
-
-        time.sleep(polling_interval)
+            watch_dir(args.watch, args.search, args.filter)
+        except FileNotFoundError:
+            watch.logger.warning(args.watch + " does not exist!")
+            watch.logger.info("Creating directory at " + args.watch)
+            os.makedirs(args.watch)
+        time.sleep(args.pollint)
 
     # final exit point happens here
     # Log a message that we are shutting down
@@ -107,10 +125,6 @@ def main():
         ('-' * 20) + '\n'
         .format(__file__, start_time.isoformat())
     )
-    parser = create_parser()
-
-    args = parser.parse_args()
-    watch_dir(args)
     total_uptime = datetime.datetime.now() - start_time
 
     watch.logger.info(
