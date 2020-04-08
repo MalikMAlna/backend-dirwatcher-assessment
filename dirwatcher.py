@@ -87,7 +87,7 @@ def main():
             pass
             # watch_dir(polling_interval)
         except Exception as e:
-            pass
+            print(e)
             # This is an UNHANDLED exception
             # Log an ERROR level message here
             # put a sleep inside my while loop
@@ -116,7 +116,7 @@ def main():
     watch.logger.info(
         '\n'
         ('-' * 20) + '\n'
-        'Stopping {0}...\n'
+        'Stopped {0}...\n'
         'Total Uptime: {1}\n'
         ('-' * 20) + '\n'
         .format(__file__, str(total_uptime))
