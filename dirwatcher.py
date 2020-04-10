@@ -128,9 +128,9 @@ def main(args):
             # os.makedirs(args.watch)
         time.sleep(args.pollint)
 
-    # final exit point happens here
-    # Log a message that we are shutting down
-    # Include the overall uptime since program start.
+    # Final exit point happens here
+    # Logs a message that we are shutting down
+    # Includes the overall uptime since program start.
 
     total_uptime = datetime.datetime.now() - start_time
     watch.logger.info(
