@@ -63,6 +63,8 @@ def watch_dir(dirpath, magic_word, extension, pollint):
     """Watches current directory for file changes"""
     files_dict = {}
     while not exit_flag:
+        # Logging if dirwatcher is still watching the dir
+        logger.debug("Watching directory...")
         # Adding files to watch
         for filename in os.listdir(dirpath):
             if filename.endswith(extension) and filename not in files_dict:
@@ -105,7 +107,6 @@ def main(args):
     while not exit_flag:
         try:
             watch_dir(args.watch, args.search, args.filter, args.pollint)
-            logger.debug("Watching directory...")
         except FileNotFoundError:
             logger.warning(args.watch + " does not exist!")
         except Exception:
