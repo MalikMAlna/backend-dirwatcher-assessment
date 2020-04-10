@@ -115,8 +115,8 @@ def main(args):
             watch.logger.debug("Watching directory...")
         except FileNotFoundError:
             watch.logger.warning(args.watch + " does not exist!")
-            watch.logger.info("Creating directory at " + args.watch)
-            os.makedirs(args.watch)
+            # watch.logger.info("Creating directory at " + args.watch)
+            # os.makedirs(args.watch)
         time.sleep(args.pollint)
 
     # final exit point happens here
