@@ -38,6 +38,7 @@ def signal_handler(sig_num, frame):
 
 
 def scan_file(filename, magic_word, start_line):
+    """Scans files for word starting on the last line where the scan ended"""
     with open(filename, "r") as f:
         search_idx = 0
         lines = f.read()
@@ -51,16 +52,20 @@ def scan_file(filename, magic_word, start_line):
 
 
 def detect_added_files(filename):
+    """Detects if new files were added to directory"""
     watch.logger.info("{} has been added".format(filename))
 
 
 def detect_removed_files(filename):
+    """Detects if new files were added to directory"""
     watch.logger.info("{} has been removed".format(filename))
     return filename
 
 
 def watch_dir(dirpath, magic_word, extension):
+    """Watches current directory for file changes"""
     files_dict = {}
+    os.chdir(dirpath)
     for filename in os.listdir(dirpath):
         if filename.endswith(extension) and filename not in files_dict:
             detect_added_files(filename)
@@ -107,6 +112,7 @@ def main(args):
     while not exit_flag:
         try:
             watch_dir(args.watch, args.search, args.filter)
+            watch.logger.debug("Watching directory...")
         except FileNotFoundError:
             watch.logger.warning(args.watch + " does not exist!")
             watch.logger.info("Creating directory at " + args.watch)
