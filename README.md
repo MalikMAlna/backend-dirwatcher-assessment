@@ -10,7 +10,7 @@ Dirwatcher is a long running program with signal handling and logging. It was cr
 
 Type the following in your console:
 
-python dirwatcher.py [-h][-p pollint] [-f filter] 'search_word' 'directory_to_watch'
+python dirwatcher.py [-h][-p pollint] [-f filter] 'directory_to_watch' 'search_word'
 
     pollint = the interval you wish to set for the directory to be checked.
     The default value is 1.0 second.

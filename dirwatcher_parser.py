@@ -14,9 +14,9 @@ def create_parser():
         help='filters the file extension to search within for the magic word',
         default=".txt")
     parser.add_argument(
-        'search',
-        help='sets the magic word to find in the directory')
-    parser.add_argument(
         'watch',
         help='specifies the directory to watch')
+    parser.add_argument(
+        'search',
+        help='sets the magic word to find in the directory')
     return parser
