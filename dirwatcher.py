@@ -105,6 +105,15 @@ def main(args):
     signal.signal(signal.SIGTERM, signal_handler)
     # Now signal_handler will get called if OS sends
     # either of these to my process.
+    start_time = datetime.datetime.now()
+    watch.logger.info(
+        '\n'
+        '--------------------------------------------------------\n'
+        'Running {}...\n'
+        'Started: {}\n'
+        '--------------------------------------------------------\n'
+        .format(__file__, start_time.isoformat())
+    )
 
     parser = create_parser()
     args = parser.parse_args(args)
@@ -122,23 +131,14 @@ def main(args):
     # final exit point happens here
     # Log a message that we are shutting down
     # Include the overall uptime since program start.
-    start_time = datetime.datetime.now()
-    watch.logger.info(
-        '\n'
-        ('-' * 20) + '\n'
-        'Running {0}...\n'
-        'Started: {1}\n'
-        ('-' * 20) + '\n'
-        .format(__file__, start_time.isoformat())
-    )
 
     total_uptime = datetime.datetime.now() - start_time
     watch.logger.info(
         '\n'
-        ('-' * 20) + '\n'
-        'Stopped {0}...\n'
-        'Total Uptime: {1}\n'
-        ('-' * 20) + '\n'
+        '--------------------------------------------------------\n'
+        'Stopped {}...\n'
+        'Total Uptime: {}\n'
+        '--------------------------------------------------------\n'
         .format(__file__, str(total_uptime))
     )
 
