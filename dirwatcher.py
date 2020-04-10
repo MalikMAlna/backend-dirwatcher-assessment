@@ -108,11 +108,10 @@ def main(args):
     start_time = datetime.datetime.now()
     watch.logger.info(
         '\n'
-        '--------------------------------------------------------\n'
-        'Running {}...\n'
-        'Started: {}\n'
-        '--------------------------------------------------------\n'
-        .format(__file__, start_time.isoformat())
+        f'{"-"*40}\n'
+        f'Running {__file__}...\n'
+        f'Started: {start_time.isoformat()}\n'
+        f'{"-"*40}\n'
     )
 
     parser = create_parser()
@@ -135,11 +134,10 @@ def main(args):
     total_uptime = datetime.datetime.now() - start_time
     watch.logger.info(
         '\n'
-        '--------------------------------------------------------\n'
-        'Stopped {}...\n'
-        'Total Uptime: {}\n'
-        '--------------------------------------------------------\n'
-        .format(__file__, str(total_uptime))
+        f'{"-"*40}\n'
+        f'Stopped {__file__}...\n'
+        f'Total Uptime: {str(total_uptime)}\n'
+        f'{"-"*40}\n'
     )
 
 
