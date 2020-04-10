@@ -13,6 +13,10 @@ https://stackoverflow.com/questions/4785244/
     Received desperately need help from Jake H.
     Worked with Piero and the friday gang on on this as a demo"""
 
+# Version Guard Statement
+if sys.version_info[0] < 3:
+    raise Exception("You must use Python 3+ for this program.")
+
 # Globals
 exit_flag = False
 
@@ -37,7 +41,7 @@ def signal_handler(sig_num, frame):
     :return None
     """
     # log the associated signal name (the python3 way)
-    logger.warn('Received ' + signal.Signals(sig_num).name)
+    logger.warn(f'Received {signal.Signals(sig_num).name}')
     global exit_flag
     exit_flag = True
 
@@ -50,8 +54,8 @@ def scan_file(filename, magic_word, start_line):
             if search_idx >= start_line:
                 if magic_word in line:
                     logger.info(
-                        "Found {}! in {} at line {}"
-                        .format(magic_word, filename, (search_idx + 1)))
+                        f"Found {magic_word}! in {filename} "
+                        f"at line {search_idx + 1}")
         return search_idx + 1
 
 
@@ -62,7 +66,7 @@ def watch_dir(dirpath, magic_word, extension, pollint):
         # Adding files to watch
         for filename in os.listdir(dirpath):
             if filename.endswith(extension) and filename not in files_dict:
-                logger.info("{} has been added".format(filename))
+                logger.info(f"{filename} has been added")
                 files_dict[filename] = 0
         # Removing files from watch
         for filename in list(files_dict):
