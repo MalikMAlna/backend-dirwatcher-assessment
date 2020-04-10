@@ -131,8 +131,8 @@ def main(args):
         ('-' * 20) + '\n'
         .format(__file__, start_time.isoformat())
     )
-    total_uptime = datetime.datetime.now() - start_time
 
+    total_uptime = datetime.datetime.now() - start_time
     watch.logger.info(
         '\n'
         ('-' * 20) + '\n'
@@ -141,22 +141,6 @@ def main(args):
         ('-' * 20) + '\n'
         .format(__file__, str(total_uptime))
     )
-
-    # """Parse args, scan for urls, get images from urls"""
-    # parser = create_parser()
-
-    # if not args:
-    #     parser.print_usage()
-    #     sys.exit(1)
-
-    # parsed_args = parser.parse_args(args)
-
-    # img_urls = read_urls(parsed_args.logfile)
-
-    # if parsed_args.todir:
-    #     download_images(img_urls, parsed_args.todir)
-    # else:
-    #     print('\n'.join(img_urls))
 
 
 if __name__ == '__main__':
