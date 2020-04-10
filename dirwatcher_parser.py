@@ -7,16 +7,16 @@ def create_parser():
     parser.add_argument(
         '-p', '--pollint',
         help='set the polling interval for the dirwatcher',
+        type=float,
         default=1.0)
-    parser.add_argument(
-        '-s', '--search',
-        help='sets the magic word to find in the directories')
     parser.add_argument(
         '-f', '--filter',
         help='filters the file extension to search within for the magic word',
         default=".txt")
     parser.add_argument(
-        '-w', '--watch',
+        'search',
+        help='sets the magic word to find in the directory')
+    parser.add_argument(
+        'watch',
         help='specifies the directory to watch')
-
     return parser
