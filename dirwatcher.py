@@ -106,6 +106,8 @@ def main(args):
             logger.warning(args.watch + " does not exist!")
         except Exception:
             logger.exception("Unhandled Exception! You have work to do!")
+        finally:
+            logger.info("Program Interrupted! Attempting to stabilize...")
         time.sleep(5.0)
 
     # Final exit point happens here
